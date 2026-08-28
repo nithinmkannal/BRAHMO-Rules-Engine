@@ -20,63 +20,68 @@ to produce a personalized, permission-filtered candidate set for a specific user
 
 ## Quick Start
 
-### 1. Clone & Setup
+> **Prerequisites:** Python 3.11+, Node.js 18+, a free [Supabase](https://supabase.com) account.
+
+### 1. Clone the repo
 
 ```bash
-git clone <your-repo>
-cd brahmo-rules-engine
+git clone https://github.com/nithinmkannal/BRAHMO-Rules-Engine.git
+cd BRAHMO-Rules-Engine
 ```
 
 ### 2. Supabase Setup
 
 1. Create a free project at [supabase.com](https://supabase.com)
-2. Go to **SQL Editor** → run `supabase/schema.sql`
-3. Go to **SQL Editor** → run `supabase/seed.sql`
-4. Verify: `SELECT COUNT(*) FROM knowledge_nodes` → should return 50
-5. Verify: `SELECT COUNT(*) FROM users` → should return 7
-6. Copy your **Project URL** and **anon key** from Settings → API
+2. Go to **SQL Editor** → paste and run `supabase/schema.sql`
+3. Go to **SQL Editor** → paste and run `supabase/seed.sql`
+4. Verify data:
+   ```sql
+   SELECT COUNT(*) FROM knowledge_nodes;  -- expect 50
+   SELECT COUNT(*) FROM users;            -- expect 7
+   ```
+5. Go to **Settings → API** and note your **Project URL** and **anon / publishable key** — you'll need them in steps 3 and 4 below.
 
 ### 3. Backend (Python / FastAPI)
 
 ```bash
-cd backend
-
-# Create virtual environment
+# From the repo root
 python3 -m venv venv
-source venv/bin/activate       # Windows: .\venv\Scripts\Activate.ps1
+source venv/bin/activate        # Windows: .\venv\Scripts\Activate.ps1
 
-# Install dependencies
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 
-# Set environment variables
-cp ../.env.example ../.env
-# Edit .env with your Supabase URL and key
+# Copy the example env file and fill in your Supabase credentials
+cp .env.example .env
+# Open .env and set:
+#   SUPABASE_URL=https://<your-project-ref>.supabase.co
+#   SUPABASE_KEY=<your-anon-key>
 
-# Start server
-cd ..
 uvicorn backend.main:app --reload --port 8000
 ```
 
-Backend runs at: http://localhost:8000
-API docs at: http://localhost:8000/docs
+- API: http://localhost:8000
+- Swagger docs: http://localhost:8000/docs
 
 ### 4. Frontend (Next.js)
 
 ```bash
 cd frontend
 
-# Install dependencies
 npm install
 
-# Set environment variables
+# Copy the example env file and fill in your Supabase credentials
 cp .env.local.example .env.local
-# Edit .env.local with your Supabase URL + anon key
+# Open .env.local and set:
+#   NEXT_PUBLIC_SUPABASE_URL=https://<your-project-ref>.supabase.co
+#   NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
+#   NEXT_PUBLIC_API_URL=http://localhost:8000
 
-# Start dev server
 npm run dev
 ```
 
-Frontend runs at: http://localhost:3000
+> ⚠️ **Never commit `.env` or `.env.local`** — both are git-ignored. Use the `.example` files as templates only.
+
+- Frontend: http://localhost:3000
 
 ---
 
