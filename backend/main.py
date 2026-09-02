@@ -35,11 +35,16 @@ app = FastAPI(title="BRAHMO Rules Engine", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount Hospital AI Assistant routes onto the same app
+from backend.ai_assistant import app as _ai_app  # noqa: E402
+for route in _ai_app.routes:
+    app.routes.append(route)
 
 
 def get_db() -> Client:

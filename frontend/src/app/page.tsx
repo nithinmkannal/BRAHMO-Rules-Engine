@@ -87,6 +87,12 @@ export default function HomePage() {
               <span className="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded border border-red-300 font-medium">
                 Silent Exclusion
               </span>
+              <a
+                href="/ai"
+                className="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded border border-purple-300 font-medium hover:bg-purple-200 transition-colors"
+              >
+                🏥 Hospital AI Assistant →
+              </a>
             </div>
           </div>
           {primaryResult && (
